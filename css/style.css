@@ -1657,6 +1657,16 @@ p {
 
 /* ============ 18. ANIMATIONS & REVEAL ============ */
 
+/* Page-load fade-in on body */
+body {
+  animation: page-fade-in 0.6s ease-out both;
+}
+
+@keyframes page-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* Default reveal: fade up */
 .reveal {
   opacity: 0;
@@ -1684,6 +1694,130 @@ p {
 .reveal.visible {
   opacity: 1;
   transform: translate(0, 0);
+}
+
+/* Staggered hero entrance — children animate in sequence on load */
+.hero-content > * {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: hero-item-in 0.6s var(--ease-out) forwards;
+}
+.hero-content > *:nth-child(1) { animation-delay: 0.15s; }
+.hero-content > *:nth-child(2) { animation-delay: 0.25s; }
+.hero-content > *:nth-child(3) { animation-delay: 0.35s; }
+.hero-content > *:nth-child(4) { animation-delay: 0.45s; }
+.hero-content > *:nth-child(5) { animation-delay: 0.55s; }
+
+@keyframes hero-item-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Gentle floating profile ring */
+.hero-profile.reveal.visible .profile-ring {
+  animation: profile-float 6s ease-in-out infinite;
+}
+
+@keyframes profile-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Button press/click effect */
+.btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* Project link button press */
+.project-link-btn:active {
+  transform: scale(0.92);
+}
+
+/* Back-to-top press */
+.back-to-top:active {
+  transform: translateY(0) scale(0.92);
+}
+
+/* Footer social press */
+.footer-social a:active {
+  transform: translateY(0) scale(0.90);
+}
+
+/* Theme toggle press */
+.theme-toggle:active {
+  transform: scale(0.92);
+}
+
+/* Hamburger press */
+.hamburger:active {
+  transform: scale(0.92);
+}
+
+/* Filter button press */
+.filter-btn:active {
+  transform: scale(0.95);
+}
+
+/* Skill item press */
+.skill-item:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* Tag press */
+.tag:active {
+  transform: translateY(0) scale(0.95);
+}
+
+/* Timeline dot pulse on hover */
+.timeline-item:hover .timeline-dot {
+  transform: scale(1.25);
+}
+
+/* Contact channel icon pop on hover */
+.contact-channel:hover .contact-channel-icon {
+  transform: scale(1.08);
+}
+
+/* Skill dot glow pulse on hover */
+.skill-item:hover .skill-dot {
+  animation: dot-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+  0%, 100% { box-shadow: 0 0 6px var(--accent-glow); }
+  50% { box-shadow: 0 0 12px var(--accent-glow); }
+}
+
+/* Section header subtle slide-in for tag */
+.section-header.reveal.visible .section-tag {
+  animation: tag-slide 0.5s var(--ease-out) 0.2s both;
+}
+
+@keyframes tag-slide {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Mobile touch feedback — subtle active state for touch devices */
+@media (hover: none) {
+  .btn:active {
+    transform: scale(0.97);
+  }
+  .project-card:active {
+    transform: translateY(-4px) scale(0.99);
+  }
+  .skill-category:active {
+    transform: translateY(-2px) scale(0.99);
+  }
+  .contact-channel:active {
+    transform: translateX(2px) scale(0.99);
+  }
+  .experience-card:active,
+  .whatido-card:active {
+    transform: translateY(-2px) scale(0.99);
+  }
+  .timeline-card:active {
+    transform: translateX(2px) scale(0.99);
+  }
 }
 
 /* ============ CGPA CARD ============ */
@@ -2080,19 +2214,22 @@ p {
     transform: none;
   }
 
-  .profile-ring::before {
+  .profile-ring::before,
+  .hero-profile.reveal.visible .profile-ring,
+  .hero-glow,
+  .wheel,
+  .experience-banner-icon,
+  .skill-item:hover .skill-dot {
+    animation: none !important;
+  }
+
+  .hero-content > * {
+    opacity: 1;
+    transform: none;
     animation: none;
   }
 
-  .hero-glow {
-    animation: none;
-  }
-
-  .wheel {
-    animation: none;
-  }
-
-  .experience-banner-icon {
+  body {
     animation: none;
   }
 }
