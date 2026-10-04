@@ -732,43 +732,21 @@ p {
 }
 
 .about-text p {
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
   line-height: 1.7;
 }
 
-.about-interests,
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
 .about-strengths {
   margin-top: var(--space-4);
 }
 
-.about-interests h4,
 .about-strengths h4 {
   margin-bottom: var(--space-2);
   color: var(--text-primary);
-}
-
-.interest-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1);
-}
-
-.tag {
-  padding: 6px 14px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  transition: all var(--t-fast);
-}
-
-.tag:hover {
-  border-color: var(--border-accent);
-  color: var(--accent);
-  background: var(--accent-soft);
-  transform: translateY(-2px);
 }
 
 .strength-cards {
@@ -925,40 +903,12 @@ p {
 
 /* ============ 11. PROJECTS SECTION ============ */
 
-.project-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: var(--space-5);
-  justify-content: center;
-}
-
-.filter-btn {
-  padding: 8px 20px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  transition: all var(--t-fast);
-}
-
-.filter-btn:hover {
-  border-color: var(--border-hover);
-  color: var(--text-primary);
-}
-
-.filter-btn.active {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
-
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: var(--space-3);
+  max-width: 640px;
+  margin: 0 auto;
 }
 
 .project-card {
@@ -975,6 +925,11 @@ p {
   border-color: var(--border-hover);
   box-shadow: var(--shadow-lg);
   transform: translateY(-8px);
+}
+
+.project-featured {
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-accent);
 }
 
 .project-card.hidden {
@@ -1265,44 +1220,6 @@ p {
 
 /* ============ 13. EXPERIENCE SECTION ============ */
 
-.experience-banner {
-  text-align: center;
-  padding: var(--space-6) var(--space-4);
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  margin-bottom: var(--space-5);
-}
-
-.experience-banner-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 80px;
-  height: 80px;
-  margin-bottom: var(--space-2);
-  border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent);
-  animation: pulse-glow 3s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
-  50% { box-shadow: 0 0 0 16px transparent; }
-}
-
-.experience-banner h3 {
-  margin-bottom: var(--space-1);
-  color: var(--text-primary);
-}
-
-.experience-banner p {
-  max-width: 600px;
-  margin: 0 auto;
-  font-size: 0.95rem;
-}
-
 .experience-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1339,80 +1256,7 @@ p {
   line-height: 1.6;
 }
 
-/* ============ 14. WHAT I DO SECTION ============ */
-
-.whatido-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-3);
-}
-
-.whatido-card {
-  padding: var(--space-4);
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  transition: all var(--t-base);
-  text-align: left;
-  position: relative;
-  overflow: hidden;
-}
-
-.whatido-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: var(--gradient-1);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform var(--t-base);
-}
-
-.whatido-card:hover {
-  border-color: var(--border-hover);
-  background: var(--bg-card-hover);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-}
-
-.whatido-card:hover::before {
-  transform: scaleX(1);
-}
-
-.whatido-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  margin-bottom: var(--space-2);
-  border-radius: var(--radius-md);
-  background: var(--accent-soft);
-  color: var(--accent);
-  transition: all var(--t-base);
-}
-
-.whatido-card:hover .whatido-icon {
-  transform: scale(1.1);
-  background: var(--accent);
-  color: #fff;
-}
-
-.whatido-card h3 {
-  font-size: 1.1rem;
-  margin-bottom: 8px;
-  color: var(--text-primary);
-}
-
-.whatido-card p {
-  font-size: 0.875rem;
-  line-height: 1.6;
-}
-
-/* ============ 15. CONTACT SECTION ============ */
+/* ============ 14. CONTACT SECTION ============ */
 
 .contact-grid {
   display: grid;
@@ -1756,18 +1600,8 @@ body {
   transform: scale(0.92);
 }
 
-/* Filter button press */
-.filter-btn:active {
-  transform: scale(0.95);
-}
-
 /* Skill item press */
 .skill-item:active {
-  transform: translateY(0) scale(0.95);
-}
-
-/* Tag press */
-.tag:active {
   transform: translateY(0) scale(0.95);
 }
 
@@ -1815,8 +1649,7 @@ body {
   .contact-channel:active {
     transform: translateX(2px) scale(0.99);
   }
-  .experience-card:active,
-  .whatido-card:active {
+  .experience-card:active {
     transform: translateY(-2px) scale(0.99);
   }
   .timeline-card:active {
@@ -2003,10 +1836,6 @@ body {
   .experience-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  .whatido-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 /* Tablet */
@@ -2060,6 +1889,7 @@ body {
 
   .projects-grid {
     grid-template-columns: 1fr;
+    max-width: 100%;
   }
 
   .contact-grid {
@@ -2067,10 +1897,6 @@ body {
   }
 
   .experience-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .whatido-grid {
     grid-template-columns: 1fr;
   }
 
@@ -2141,12 +1967,6 @@ body {
     gap: 6px;
   }
 
-  .filter-btn {
-    padding: 6px 14px;
-    font-size: 0.8rem;
-  }
-
-  .timeline-card {
     padding: var(--space-3);
   }
 
@@ -2192,12 +2012,7 @@ body {
   .skill-category {
     padding: var(--space-3);
   }
-
-  .experience-banner {
-    padding: var(--space-4) var(--space-2);
-  }
 }
-
 /* ============ 20. REDUCED MOTION ============ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -2222,7 +2037,6 @@ body {
   .hero-profile.reveal.visible .profile-ring,
   .hero-glow,
   .wheel,
-  .experience-banner-icon,
   .skill-item:hover .skill-dot {
     animation: none !important;
   }

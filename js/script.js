@@ -181,36 +181,7 @@
     });
   });
 
-  /* ============ 9. PROJECT FILTERING ============ */
-
-  const filterButtons = document.querySelectorAll('.filter-btn');
-  const projectCards = document.querySelectorAll('.project-card');
-
-  filterButtons.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      // Update active button
-      filterButtons.forEach(function (b) {
-        b.classList.remove('active');
-      });
-      btn.classList.add('active');
-
-      const filter = btn.getAttribute('data-filter');
-
-      projectCards.forEach(function (card) {
-        const category = card.getAttribute('data-category');
-        if (filter === 'all' || category === filter) {
-          card.classList.remove('hidden');
-          // Re-trigger reveal animation
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        } else {
-          card.classList.add('hidden');
-        }
-      });
-    });
-  });
-
-  /* ============ 10. CONTACT FORM VALIDATION & FORMSPREE SUBMISSION ============ */
+  /* ============ 9. CONTACT FORM VALIDATION & FORMSPREE SUBMISSION ============ */
 
   const contactForm = document.getElementById('contactForm');
   const nameInput = document.getElementById('name');
