@@ -1963,10 +1963,7 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .project-filters {
-    gap: 6px;
-  }
-
+  .timeline-card {
     padding: var(--space-3);
   }
 

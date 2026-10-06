@@ -11,9 +11,8 @@
    6.  Scroll reveal animations (IntersectionObserver)
    7.  Scroll progress bar
    8.  Back to top button
-   9.  Project filtering
-   10. Contact form validation
-   11. Auto-updating footer year
+   9. Contact form validation
+   10. Auto-updating footer year
    ============================================================ */
 
 (function () {
