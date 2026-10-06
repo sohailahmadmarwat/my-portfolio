@@ -196,15 +196,11 @@
   const submitBtn = document.getElementById('submitBtn');
 
   // ============================================================
-  // FORMSPREE ENDPOINT — REPLACE THIS WITH YOUR REAL ENDPOINT
+  // Contact form submits to a Supabase Edge Function that stores
+  // the message in the database. The owner can read submissions
+  // from the Supabase dashboard.
   // ============================================================
-  // 1. Go to https://formspree.io and create a free account
-  // 2. Create a new form and copy your endpoint URL
-  //    It will look like: https://formspree.io/f/abcdwxyz
-  // 3. Replace the string below with your real endpoint
-  // ============================================================
-  const FORMSPREE_ENDPOINT = 'YOUR_FORMSPREE_ENDPOINT';
-  // ============================================================
+  const CONTACT_ENDPOINT = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/contact-submit`;
 
   function validateName() {
     const value = nameInput.value.trim();
@@ -317,34 +313,38 @@
       return;
     }
 
-    // Check if Formspree endpoint has been configured
-    if (FORMSPREE_ENDPOINT === 'YOUR_FORMSPREE_ENDPOINT') {
-      showFormMessage(formError, 'Contact form is not yet configured. Please email me directly using the email address shown on the left.');
-      return;
-    }
-
+    // Submit to Supabase Edge Function
     setLoading(true);
 
-    const formData = new FormData(contactForm);
-
-    fetch(FORMSPREE_ENDPOINT, {
+    fetch(CONTACT_ENDPOINT, {
       method: 'POST',
-      body: formData,
-      headers: { Accept: 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+      },
+      body: JSON.stringify({
+        name: nameInput.value.trim(),
+        email: emailInput.value.trim(),
+        subject: subjectInput.value.trim(),
+        message: messageInput.value.trim(),
+      }),
     })
       .then(function (response) {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error('Network response was not ok');
+        return response.json().then(function (data) {
+          return { ok: response.ok, data: data };
+        });
       })
-      .then(function () {
-        contactForm.reset();
-        showFormMessage(formSuccess, "Message sent successfully! I'll get back to you soon.");
-        setTimeout(function () {
-          formSuccess.classList.remove('show');
-          formSuccess.textContent = '';
-        }, 6000);
+      .then(function (result) {
+        if (result.ok && result.data.success) {
+          contactForm.reset();
+          showFormMessage(formSuccess, result.data.message || "Message sent successfully! I'll get back to you soon.");
+          setTimeout(function () {
+            formSuccess.classList.remove('show');
+            formSuccess.textContent = '';
+          }, 6000);
+        } else {
+          showFormMessage(formError, result.data.error || 'Something went wrong. Please try again or email me directly.');
+        }
       })
       .catch(function () {
         showFormMessage(formError, 'Something went wrong. Please try again or email me directly.');

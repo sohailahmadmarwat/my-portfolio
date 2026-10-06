@@ -681,39 +681,6 @@ p {
 }
 
 /* Scroll down indicator */
-.scroll-down {
-  position: absolute;
-  bottom: var(--space-4);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 2;
-  display: flex;
-  justify-content: center;
-}
-
-.mouse {
-  width: 26px;
-  height: 42px;
-  border: 2px solid var(--text-tertiary);
-  border-radius: var(--radius-full);
-  display: flex;
-  justify-content: center;
-  padding-top: 6px;
-}
-
-.wheel {
-  width: 4px;
-  height: 8px;
-  background: var(--text-tertiary);
-  border-radius: 2px;
-  animation: scroll-wheel 1.8s ease-in-out infinite;
-}
-
-@keyframes scroll-wheel {
-  0% { opacity: 1; transform: translateY(0); }
-  100% { opacity: 0; transform: translateY(12px); }
-}
-
 /* ============ 8. SECTION LAYOUT ============ */
 /* (handled by .section, .section-container above) */
 
@@ -2033,7 +2000,6 @@ body {
   .profile-ring::before,
   .hero-profile.reveal.visible .profile-ring,
   .hero-glow,
-  .wheel,
   .skill-item:hover .skill-dot {
     animation: none !important;
   }
