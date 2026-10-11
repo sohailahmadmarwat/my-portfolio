@@ -200,7 +200,9 @@
   // the message in the database. The owner can read submissions
   // from the Supabase dashboard.
   // ============================================================
-  const CONTACT_ENDPOINT = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/contact-submit`;
+  const SUPABASE_URL = 'https://isnyqmubsdioluimflrf.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzbnlxbXVic2Rpb2x1aW1mbHJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyOTI1NzEsImV4cCI6MjEwNjg2ODU3MX0.hG6_IFgN48h-IN8_7T4k8tUrQ6TPZw_acS1bsiFKBGU';
+  const CONTACT_ENDPOINT = `${SUPABASE_URL}/functions/v1/contact-submit`;
 
   function validateName() {
     const value = nameInput.value.trim();
@@ -320,8 +322,8 @@
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+        apikey: SUPABASE_ANON_KEY,
       },
       body: JSON.stringify({
         name: nameInput.value.trim(),
@@ -348,7 +350,11 @@
             formSuccess.textContent = '';
           }, 6000);
         } else {
-          showFormMessage(formError, result.data.error || 'Something went wrong. Please try again or email me directly.');
+          var errMsg = result.data.error || 'Something went wrong. Please try again or email me directly.';
+          if (result.data.detail) {
+            errMsg += ' (' + result.data.detail + ')';
+          }
+          showFormMessage(formError, errMsg);
         }
       })
       .catch(function (err) {
