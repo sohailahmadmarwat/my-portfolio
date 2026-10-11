@@ -73,8 +73,9 @@ Deno.serve(async (req: Request) => {
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (err) {
+    const msg = err instanceof Error ? err.message : 'Unknown error';
     return new Response(
-      JSON.stringify({ error: "Something went wrong. Please try again or email me directly." }),
+      JSON.stringify({ error: 'Something went wrong. Please try again or email me directly.', detail: msg }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

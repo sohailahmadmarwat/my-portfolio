@@ -321,6 +321,7 @@
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        apikey: import.meta.env.VITE_SUPABASE_ANON_KEY,
       },
       body: JSON.stringify({
         name: nameInput.value.trim(),
@@ -329,10 +330,14 @@
         message: messageInput.value.trim(),
       }),
     })
-      .then(function (response) {
-        return response.json().then(function (data) {
-          return { ok: response.ok, data: data };
-        });
+      .then(async function (response) {
+        var data;
+        try {
+          data = await response.json();
+        } catch (e) {
+          data = {};
+        }
+        return { ok: response.ok, data: data };
       })
       .then(function (result) {
         if (result.ok && result.data.success) {
@@ -346,8 +351,8 @@
           showFormMessage(formError, result.data.error || 'Something went wrong. Please try again or email me directly.');
         }
       })
-      .catch(function () {
-        showFormMessage(formError, 'Something went wrong. Please try again or email me directly.');
+      .catch(function (err) {
+        showFormMessage(formError, 'Network error. Please check your connection and try again, or email me directly.');
       })
       .finally(function () {
         setLoading(false);
