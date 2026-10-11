@@ -55,6 +55,7 @@ Deno.serve(async (req: Request) => {
       );
     }
 
+    // 1. Save to database
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
@@ -65,7 +66,34 @@ Deno.serve(async (req: Request) => {
       .insert({ name, email, subject, message });
 
     if (insertError) {
-      throw new Error("Failed to save message.");
+      throw new Error("Failed to save message to database.");
+    }
+
+    // 2. Send email via Formspree
+    const formspreeEndpoint = Deno.env.get("FORMSPREE_ENDPOINT");
+
+    if (formspreeEndpoint) {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("subject", subject);
+      formData.append("message", message);
+      formData.append("_subject", `Portfolio Contact: ${subject}`);
+
+      const emailResponse = await fetch(formspreeEndpoint, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+        body: formData,
+      });
+
+      if (!emailResponse.ok) {
+        const emailText = await emailResponse.text();
+        throw new Error(`Formspree rejected the submission (HTTP ${emailResponse.status}): ${emailText}`);
+      }
+    } else {
+      throw new Error("Email delivery is not configured. The site owner must set up a Formspree endpoint.");
     }
 
     return new Response(
@@ -73,9 +101,9 @@ Deno.serve(async (req: Request) => {
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   } catch (err) {
-    const msg = err instanceof Error ? err.message : 'Unknown error';
+    const msg = err instanceof Error ? err.message : "Unknown error";
     return new Response(
-      JSON.stringify({ error: 'Something went wrong. Please try again or email me directly.', detail: msg }),
+      JSON.stringify({ error: "Something went wrong. Please try again or email me directly.", detail: msg }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }
