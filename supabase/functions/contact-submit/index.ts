@@ -70,30 +70,26 @@ Deno.serve(async (req: Request) => {
     }
 
     // 2. Send email via Formspree
-    const formspreeEndpoint = Deno.env.get("FORMSPREE_ENDPOINT");
+    const formspreeEndpoint = "https://formspree.io/f/mkjobyzk";
 
-    if (formspreeEndpoint) {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("subject", subject);
-      formData.append("message", message);
-      formData.append("_subject", `Portfolio Contact: ${subject}`);
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("email", email);
+    formData.append("subject", subject);
+    formData.append("message", message);
+    formData.append("_subject", `Portfolio Contact: ${subject}`);
 
-      const emailResponse = await fetch(formspreeEndpoint, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-        },
-        body: formData,
-      });
+    const emailResponse = await fetch(formspreeEndpoint, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+      body: formData,
+    });
 
-      if (!emailResponse.ok) {
-        const emailText = await emailResponse.text();
-        throw new Error(`Formspree rejected the submission (HTTP ${emailResponse.status}): ${emailText}`);
-      }
-    } else {
-      throw new Error("Email delivery is not configured. The site owner must set up a Formspree endpoint.");
+    if (!emailResponse.ok) {
+      const emailText = await emailResponse.text();
+      throw new Error(`Formspree rejected the submission (HTTP ${emailResponse.status}): ${emailText}`);
     }
 
     return new Response(
