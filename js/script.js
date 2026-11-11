@@ -34,6 +34,8 @@
     localStorage.setItem('portfolio-theme', next);
   });
 
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   /* ============ 2. STICKY NAVBAR SCROLL EFFECT ============ */
 
   const navbar = document.getElementById('navbar');
@@ -60,6 +62,14 @@
       backToTop.classList.add('visible');
     } else {
       backToTop.classList.remove('visible');
+    }
+
+    // Subtle hero parallax (desktop only, respects reduced motion)
+    if (!prefersReducedMotion && window.innerWidth > 768) {
+      var heroBg = document.querySelector('.hero-bg');
+      if (heroBg && scrollY < window.innerHeight) {
+        heroBg.style.transform = 'translateY(' + scrollY * 0.25 + 'px)';
+      }
     }
 
     // Active section highlighting
@@ -121,25 +131,67 @@
     });
   }
 
-  // Smooth scrolling for nav links (enhanced, offset for navbar)
+  // Smooth scrolling for nav links with custom easing + URL hash support
+  function smoothScrollTo(targetPos) {
+    if (prefersReducedMotion) {
+      window.scrollTo(0, targetPos);
+      return;
+    }
+    var startPos = window.scrollY;
+    var distance = targetPos - startPos;
+    var duration = Math.min(Math.max(Math.abs(distance) / 2.5, 300), 900);
+    var startTime = null;
+
+    function animate(timestamp) {
+      if (!startTime) startTime = timestamp;
+      var elapsed = timestamp - startTime;
+      var progress = Math.min(elapsed / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      window.scrollTo(0, startPos + distance * eased);
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+
+  function scrollToSection(targetId) {
+    var target = document.querySelector(targetId);
+    if (!target) return;
+    var navHeight = navbar.offsetHeight;
+    var targetPos = target.getBoundingClientRect().top + window.scrollY - navHeight + 1;
+    smoothScrollTo(targetPos);
+  }
+
   document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href');
       if (targetId === '#' || targetId.length < 2) return;
 
-      const target = document.querySelector(targetId);
-      if (!target) return;
-
       e.preventDefault();
-      const navHeight = navbar.offsetHeight;
-      const targetPos = target.getBoundingClientRect().top + window.scrollY - navHeight + 1;
+      scrollToSection(targetId);
 
-      window.scrollTo({
-        top: targetPos,
-        behavior: 'smooth',
-      });
+      // Update URL hash without triggering default jump
+      if (history.pushState) {
+        history.pushState(null, '', targetId);
+      }
     });
   });
+
+  // Handle back/forward navigation
+  window.addEventListener('popstate', function () {
+    var hash = window.location.hash;
+    if (hash && hash.length > 1) {
+      scrollToSection(hash);
+    }
+  });
+
+  // Scroll to hash on initial load
+  if (window.location.hash && window.location.hash.length > 1) {
+    window.addEventListener('load', function () {
+      scrollToSection(window.location.hash);
+    });
+  }
 
   /* ============ 6. SCROLL REVEAL ANIMATIONS ============ */
 

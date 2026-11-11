@@ -290,7 +290,7 @@ p {
 }
 .btn-primary:hover {
   background: var(--accent-hover);
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
   box-shadow: var(--shadow-accent);
 }
 
@@ -302,7 +302,7 @@ p {
 .btn-secondary:hover {
   border-color: var(--border-accent);
   background: var(--bg-card-hover);
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
 }
 
 .btn-ghost {
@@ -314,7 +314,7 @@ p {
   color: var(--text-primary);
   border-color: var(--border-hover);
   background: var(--bg-glass);
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
 }
 
 .btn-full {
@@ -409,6 +409,7 @@ p {
 
 .nav-link:hover {
   color: var(--text-primary);
+  background: var(--accent-soft);
 }
 
 .nav-link.active {
@@ -889,7 +890,7 @@ p {
 }
 
 .project-card:hover {
-  border-color: var(--border-hover);
+  border-color: var(--border-accent);
   box-shadow: var(--shadow-lg);
   transform: translateY(-8px);
 }
@@ -1572,7 +1573,7 @@ p {
 }
 
 .contact-submit-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.02);
   box-shadow: 0 8px 30px rgba(59, 130, 246, 0.35);
   background: linear-gradient(135deg, #60a5fa, #a78bfa);
 }
@@ -1805,6 +1806,16 @@ body {
 
 @keyframes hero-item-in {
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hero name — blur-to-focus entrance */
+.hero-name {
+  animation: hero-name-in 0.8s var(--ease-out) 0.25s both;
+}
+
+@keyframes hero-name-in {
+  from { opacity: 0; transform: translateY(20px); filter: blur(12px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
 }
 
 /* Gentle floating profile ring */
@@ -2298,6 +2309,13 @@ body {
     opacity: 1;
     transform: none;
     animation: none;
+  }
+
+  .hero-name {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 
   body {
