@@ -4,9 +4,6 @@ Personal portfolio website showcasing my projects, education, and skills as a Co
 
 🔗 **Live site:** https://cs-student-portfolio-02o2.bolt.host
 
-## About
-This portfolio highlights my academic background, technical skills, and projects, including my Inventory Control System (Java + DSA).
-
 ## Built With
 - HTML, CSS, JavaScript
 - Vite
